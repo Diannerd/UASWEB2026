@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Dosen - ITU siCAD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* sedikit styling untuk avatar kecil */
+        .avatar-sm { width:48px; height:48px; object-fit:cover; border-radius:9999px; }
+    </style>
+</head>
+<body class="bg-[#f8fafc] font-sans flex overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-[#1e293b] min-h-screen text-slate-300 flex flex-col">
+        <div class="p-8 flex flex-col items-center">
+            <!-- avatar utama: akan diganti jika user upload foto -->
+            <div id="sidebarAvatarWrapper" class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-xl overflow-hidden">
+                <img id="sidebarAvatar" src="" alt="ITU" class="w-16 h-16 object-cover hidden">
+                <span id="sidebarLogoText" class="text-[#1e293b] font-black text-2xl">ITU</span>
+            </div>
+            <h2 id="sidebarOrg" class="text-sm font-semibold tracking-widest text-white uppercase text-center">
+                Indonesia Tech University
+            </h2>
+            <!-- nama dosen kecil di bawah (diisi dari profile) -->
+            <p id="sidebarName" class="text-xs text-slate-300 mt-2"></p>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2">
+            <a href="#" class="flex items-center space-x-3 bg-blue-500 text-white px-4 py-3 rounded-lg font-medium">
+                <i class="fas fa-home w-5"></i><span>Dashboard</span>
+            </a>
+
+            <a href="input-nilai.html" class="flex items-center space-x-3 hover:bg-slate-800 px-4 py-3 rounded-lg">
+                <i class="fas fa-file-invoice w-5"></i><span>Kelola Nilai</span>
+            </a>
+
+            <a href="daftar-mahasiswa.html" class="flex items-center space-x-3 hover:bg-slate-800 px-4 py-3 rounded-lg">
+                <i class="fas fa-users w-5"></i><span>Daftar Mahasiswa</span>
+            </a>
+
+            <a href="freeMaterials.html" class="flex items-center space-x-3 hover:bg-slate-800 px-4 py-3 rounded-lg">
+                <i class="fas fa-book-open w-5"></i><span>Free Materials</span>
+                <span class="bg-blue-600 text-[10px] px-2 py-0.5 rounded ml-auto">NEW</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-700">
+            <!-- beri id supaya membuka modal settings -->
+            <a href="#" id="openSettingsBtn" class="flex items-center space-x-3 hover:text-white">
+                <i class="fas fa-cog"></i><span>Pengaturan</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+
+        <!-- HEADER -->
+        <header class="bg-white h-20 border-b flex items-center justify-between px-10">
+            <div class="text-slate-500 text-sm italic">
+                Sistem Informasi Akademik & Pengelolaan Nilai Terpadu
+            </div>
+            <div class="flex items-center space-x-6">
+                <button class="text-slate-400 hover:text-blue-500 relative">
+                    <i class="fas fa-bell text-xl"></i>
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+                <button onclick="logout()"
+                    class="bg-[#3b82f6] hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow-md">
+                    Log out
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="p-12 max-w-4xl mx-auto w-full">
+            <div class="text-center mb-6">
+                <!-- H1 yang akan diupdate sesuai nama profil -->
+                <h1 id="greeting" class="text-4xl font-bold text-slate-800 mb-2">
+                    Welcome to your dashboard, ITU school
+                </h1>
+                <!-- email yang akan diupdate -->
+                <p id="emailText" class="text-xl text-slate-500 font-medium">
+                    lecturer.informatika@itu.ac.id
+                </p>
+            </div>
+
+            <!-- Tampilkan daftar mata kuliah yang diampu -->
+            <div id="dosenCoursesCard" class="mb-8 hidden">
+                <div class="bg-white rounded-2xl shadow p-6 text-left">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-slate-800">Mata Kuliah yang Diampu</h2>
+                        <button id="manageCoursesBtn" class="text-sm text-blue-600 hover:underline">Kelola</button>
+                    </div>
+                    <ul id="coursesList" class="list-disc pl-5 text-slate-700 space-y-2">
+                        <!-- akan diisi oleh JS -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="space-y-12">
+
+                <!-- Kelola Matkul -->
+                <a href="matkul.html"
+                   class="flex items-start space-x-6 group hover:bg-white hover:shadow-md p-4 rounded-2xl transition">
+                    <div class="bg-blue-50 p-4 rounded-xl text-blue-600 group-hover:bg-blue-600 group-hover:text-white">
+                        <i class="fas fa-user-plus text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Kelola Mata Kuliah</h3>
+                        <p class="text-slate-500">
+                            Tambahkan silabus, atur jadwal, dan bobot penilaian.
+                        </p>
+                    </div>
+                </a>
+
+                <!-- Input Nilai -->
+                <a href="input-nilai.html"
+                   class="flex items-start space-x-6 group hover:bg-white hover:shadow-md p-4 rounded-2xl transition">
+                    <div class="bg-blue-50 p-4 rounded-xl text-blue-600 group-hover:bg-blue-600 group-hover:text-white">
+                        <i class="fas fa-edit text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Input Nilai Mahasiswa</h3>
+                        <p class="text-slate-500">
+                            Nilai Tugas, UTS, dan UAS otomatis tersinkronisasi ke KHS.
+                        </p>
+                    </div>
+                </a>
+
+                <!-- EXPORT LAPORAN -->
+                <div onclick="openExportModal()"
+                     class="cursor-pointer flex items-start space-x-6 group hover:bg-white hover:shadow-md p-4 rounded-2xl transition">
+                    <div class="bg-blue-50 p-4 rounded-xl text-blue-600 group-hover:bg-blue-600 group-hover:text-white">
+                        <i class="fas fa-file-export text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Export Laporan Akademik</h3>
+                        <p class="text-slate-500">
+                            Unduh rekap nilai (.xlsx) atau cetak KHS resmi (PDF).
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL EXPORT -->
+    <div id="exportModal"
+         class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6">Export Laporan Akademik</h2>
+
+            <button onclick="exportExcel()"
+                class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg mb-4">
+                📊 Export Nilai Kelas (.xlsx)
+            </button>
+
+            <div class="flex space-x-2">
+                <input id="nimPdf" type="text" placeholder="Masukkan NIM Mahasiswa"
+                    class="flex-1 border rounded-lg px-4 py-2">
+                <button onclick="exportPDF()"
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 rounded-lg">
+                    🧾 PDF KHS
+                </button>
+            </div>
+
+            <button onclick="closeExportModal()" class="mt-6 w-full text-slate-500">
+                Batal
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL SETTINGS (profil + mata kuliah) -->
+    <div id="settingsModal" class="fixed inset-0 hidden items-center justify-center z-50">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="bg-white rounded-2xl shadow-2xl p-6 z-10 w-[520px] max-w-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pengaturan Profil & Mata Kuliah</h3>
+                <button id="closeSettings" class="text-slate-500 hover:text-slate-800"><i class="fas fa-times"></i></button>
+            </div>
+
+            <form id="profileForm" class="grid grid-cols-1 gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-20 h-20 rounded-full overflow-hidden bg-slate-100 flex items-center justify-center">
+                        <img id="previewAvatar" src="" alt="avatar" class="w-20 h-20 object-cover hidden">
+                        <span id="previewLogoTxt" class="text-slate-600 font-bold">ITU</span>
+                    </div>
+                    <div class="flex-1">
+                        <label class="text-xs font-bold text-slate-600">Foto Profil</label>
+                        <input id="avatarInput" type="file" accept="image/*" class="mt-2 text-sm">
+                        <p class="text-xs text-slate-400 mt-1">Maks 2MB. JPG/PNG.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-xs font-bold text-slate-600">Nama Lengkap</label>
+                    <input id="inputName" type="text" class="w-full border rounded px-3 py-2" placeholder="Contoh: Anita Wijaya">
+                </div>
+
+                <div>
+                    <label class="text-xs font-bold text-slate-600">Email</label>
+                    <input id="inputEmail" type="email" class="w-full border rounded px-3 py-2" placeholder="Contoh: anita.informatika@itu.ac.id">
+                </div>
+
+                <div>
+                    <label class="text-xs font-bold text-slate-600">Mata Kuliah yang Diampu</label>
+                    <div class="flex gap-2 mt-2">
+                        <input id="inputCourse" type="text" class="flex-1 border rounded px-3 py-2" placeholder="Contoh: Algoritma & Struktur Data">
+                        <button id="addCourseBtn" type="button" class="px-4 py-2 bg-blue-600 text-white rounded">Tambah</button>
+                    </div>
+                    <ul id="coursesEditList" class="mt-3 space-y-2 text-slate-700">
+                        <!-- list course di edit -->
+                    </ul>
+                </div>
+
+                <div class="flex justify-end space-x-2 mt-2">
+                    <button type="button" id="cancelSettings" class="px-4 py-2 rounded border">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded bg-blue-600 text-white">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        // ======= util & storage keys =======
+        const PROFILE_KEY = 'dosenProfile';
+
+        // ======= DOM refs =======
+        const greetingEl = document.getElementById('greeting');
+        const emailEl = document.getElementById('emailText');
+        const coursesCard = document.getElementById('dosenCoursesCard');
+        const coursesListEl = document.getElementById('coursesList');
+        const manageCoursesBtn = document.getElementById('manageCoursesBtn');
+
+        const openSettingsBtn = document.getElementById('openSettingsBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const closeSettings = document.getElementById('closeSettings');
+        const cancelSettings = document.getElementById('cancelSettings');
+
+        const avatarInput = document.getElementById('avatarInput');
+        const previewAvatar = document.getElementById('previewAvatar');
+        const previewLogoTxt = document.getElementById('previewLogoTxt');
+        const sidebarAvatar = document.getElementById('sidebarAvatar');
+        const sidebarLogoText = document.getElementById('sidebarLogoText');
+        const sidebarName = document.getElementById('sidebarName');
+
+        const inputName = document.getElementById('inputName');
+        const inputEmail = document.getElementById('inputEmail');
+        const inputCourse = document.getElementById('inputCourse');
+        const addCourseBtn = document.getElementById('addCourseBtn');
+        const coursesEditList = document.getElementById('coursesEditList');
+
+        // open modal pengaturan
+        openSettingsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openSettings();
+        });
+        manageCoursesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openSettings();
+            // fokus field course
+            inputCourse.focus();
+        });
+
+        function openSettings() {
+            settingsModal.classList.remove('hidden');
+            settingsModal.classList.add('flex');
+            loadProfileToForm();
+        }
+        function closeSettingsModal() {
+            settingsModal.classList.add('hidden');
+            settingsModal.classList.remove('flex');
+        }
+        closeSettings.addEventListener('click', closeSettingsModal);
+        cancelSettings.addEventListener('click', closeSettingsModal);
+
+        // ======= load / save profile =======
+        function loadProfile() {
+            const raw = localStorage.getItem(PROFILE_KEY);
+            if (!raw) return null;
+            try { return JSON.parse(raw); } catch(e) { return null; }
+        }
+        function saveProfile(profile) {
+            localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+        }
+
+        // set UI from profile
+        function applyProfile(profile) {
+            if (!profile) {
+                greetingEl.textContent = 'Welcome to your dashboard, ITU school';
+                emailEl.textContent = 'lecturer.informatika@itu.ac.id';
+                coursesCard.classList.add('hidden');
+                sidebarLogoText.classList.remove('hidden');
+                sidebarAvatar.classList.add('hidden');
+                sidebarName.textContent = '';
+                return;
+            }
+
+            // greeting: include first name if possible
+            const name = profile.name && profile.name.trim();
+            if (name) {
+                // ambil nama depan
+                const first = name.split(' ')[0];
+                greetingEl.textContent = `Welcome to your dashboard, ${first}!`;
+            } else {
+                greetingEl.textContent = 'Welcome to your dashboard, ITU school';
+            }
+
+            emailEl.textContent = profile.email || 'lecturer.informatika@itu.ac.id';
+
+            // sidebar avatar
+            if (profile.avatar) {
+                sidebarAvatar.src = profile.avatar;
+                sidebarAvatar.classList.remove('hidden');
+                sidebarLogoText.classList.add('hidden');
+            } else {
+                sidebarAvatar.classList.add('hidden');
+                sidebarLogoText.classList.remove('hidden');
+            }
+
+            // sidebar name
+            sidebarName.textContent = profile.name ? profile.name : '';
+
+            // courses
+            if (profile.courses && profile.courses.length) {
+                coursesListEl.innerHTML = '';
+                profile.courses.forEach(c => {
+                    const li = document.createElement('li');
+                    li.textContent = c;
+                    coursesListEl.appendChild(li);
+                });
+                coursesCard.classList.remove('hidden');
+            } else {
+                coursesCard.classList.add('hidden');
+                coursesListEl.innerHTML = '';
+            }
+        }
+
+        // load profile into form for editing
+        function loadProfileToForm() {
+            const profile = loadProfile();
+            if (!profile) {
+                inputName.value = '';
+                inputEmail.value = '';
+                previewAvatar.src = '';
+                previewAvatar.classList.add('hidden');
+                previewLogoTxt.classList.remove('hidden');
+                coursesEditList.innerHTML = '';
+                return;
+            }
+            inputName.value = profile.name || '';
+            inputEmail.value = profile.email || '';
+            if (profile.avatar) {
+                previewAvatar.src = profile.avatar;
+                previewAvatar.classList.remove('hidden');
+                previewLogoTxt.classList.add('hidden');
+            } else {
+                previewAvatar.src = '';
+                previewAvatar.classList.add('hidden');
+                previewLogoTxt.classList.remove('hidden');
+            }
+            // render course edit list
+            renderCoursesEditList(profile.courses || []);
+        }
+
+        // render editable list of courses with delete
+        function renderCoursesEditList(courses) {
+            coursesEditList.innerHTML = '';
+            if (!courses || !courses.length) {
+                coursesEditList.innerHTML = '<li class="text-sm text-slate-400">Belum ada mata kuliah.</li>';
+                return;
+            }
+            courses.forEach((c, idx) => {
+                const li = document.createElement('li');
+                li.className = 'flex items-center justify-between bg-slate-50 p-2 rounded';
+                li.innerHTML = `<span class="text-sm">${escapeHtml(c)}</span>
+                                <button data-idx="${idx}" class="deleteCourseBtn text-red-500 text-sm px-2">Hapus</button>`;
+                coursesEditList.appendChild(li);
+            });
+
+            // attach delete listeners
+            Array.from(coursesEditList.querySelectorAll('.deleteCourseBtn')).forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = Number(btn.dataset.idx);
+                    const profile = loadProfile() || { name:'', email:'', avatar:'', courses:[] };
+                    profile.courses = profile.courses || [];
+                    profile.courses.splice(idx,1);
+                    saveProfile(profile);
+                    loadProfileToForm();
+                    applyProfile(profile);
+                });
+            });
+        }
+
+        // add course from input
+        addCourseBtn.addEventListener('click', () => {
+            const val = inputCourse.value && inputCourse.value.trim();
+            if (!val) return alert('Isi nama mata kuliah terlebih dahulu');
+            const profile = loadProfile() || { name:'', email:'', avatar:'', courses:[] };
+            profile.courses = profile.courses || [];
+            profile.courses.push(val);
+            saveProfile(profile);
+            inputCourse.value = '';
+            loadProfileToForm();
+            applyProfile(profile);
+        });
+
+        // handle avatar input preview & convert to base64
+        avatarInput.addEventListener('change', (e) => {
+            const f = e.target.files && e.target.files[0];
+            if (!f) return;
+            if (f.size > 2 * 1024 * 1024) {
+                alert('Ukuran file terlalu besar (maks 2MB).');
+                avatarInput.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                previewAvatar.src = ev.target.result;
+                previewAvatar.classList.remove('hidden');
+                previewLogoTxt.classList.add('hidden');
+            };
+            reader.readAsDataURL(f);
+        });
+
+        // save form submit
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = inputName.value.trim();
+            const email = inputEmail.value.trim();
+            const avatarData = previewAvatar.src || '';
+
+            const profile = loadProfile() || { name:'', email:'', avatar:'', courses:[] };
+            profile.name = name;
+            profile.email = email;
+            profile.avatar = avatarData; // jika kosong, akan clear
+            // keep courses as-is (editing via add/hapus)
+            saveProfile(profile);
+            applyProfile(profile);
+            closeSettingsModal();
+            alert('Profil tersimpan.');
+        });
+
+        // escape helper
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+        }
+
+        // ======= initial setup on page load =======
+        function initProfileUI() {
+            const profile = loadProfile();
+            applyProfile(profile);
+        }
+
+        // handle clicking outside modal to close (optional small UX)
+        settingsModal.addEventListener('click', (ev) => {
+            if (ev.target === settingsModal) closeSettingsModal();
+        });
+
+        // manage courses quick open from card
+        manageCoursesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openSettings();
+        });
+
+        // ======= keep existing functions (logout, export) intact =======
+        function logout() {
+            localStorage.clear();
+            window.location.href = '../index.html';
+        }
+
+        window.onload = function () {
+            // check role as before
+            if (localStorage.getItem('role') !== 'dosen') {
+                window.location.href = '../index.html';
+                return;
+            }
+            initProfileUI();
+        }
+
+        function openExportModal() {
+            document.getElementById('exportModal').classList.remove('hidden');
+            document.getElementById('exportModal').classList.add('flex');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.add('hidden');
+            document.getElementById('exportModal').classList.remove('flex');
+        }
+
+        function exportExcel() {
+            window.open('http://192.168.56.106:3000/api/export/nilai-kelas', '_blank');
+        }
+
+        function exportPDF() {
+            const nim = document.getElementById('nimPdf').value;
+            if (!nim) {
+                alert('Masukkan NIM mahasiswa');
+                return;
+            }
+            window.open(`http://192.168.56.106:3000/api/export/khs/${nim}`, '_blank');
+        }
+
+        // ======= small helper: when profile changes elsewhere, keep sidebar avatar updated =======
+        // observe localStorage changes (for multi-tab)
+        window.addEventListener('storage', (e) => {
+            if (e.key === PROFILE_KEY) {
+                const profile = loadProfile();
+                applyProfile(profile);
+            }
+        });
+
+    </script>
+
+</body>
+</html>

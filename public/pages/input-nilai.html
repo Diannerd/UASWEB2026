@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Nilai Mahasiswa - ITU siCAD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-primary { background-color: #152259; }
+        .bg-gradient-itu { background: linear-gradient(90deg, #152259 0%, #509cdb 100%); }
+        .text-primary { color: #152259; }
+        .text-secondary { color: #509cdb; }
+        .text-muted { color: #495580; }
+    </style>
+</head>
+<body class="bg-[#f3f4f9] font-sans flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-primary text-white flex flex-col shrink-0 shadow-2xl">
+        <div class="p-8 flex flex-col items-center border-b border-white/10">
+            <div class="w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-3 shadow-lg">
+                <span class="text-primary font-black text-2xl">ITU</span>
+            </div>
+            <h2 class="text-xs font-bold tracking-widest uppercase text-center opacity-80">Indonesia Tech University</h2>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-1">
+            <a href="dashboardDosen.html" class="flex items-center space-x-3 hover:bg-white/10 px-4 py-3 rounded-xl transition">
+                <i class="fas fa-home w-5 text-secondary"></i> <span>Dashboard</span>
+            </a>
+            <a href="matkul.html" class="flex items-center space-x-3 hover:bg-white/10 px-4 py-3 rounded-xl transition">
+                <i class="fas fa-chalkboard-teacher w-5 text-secondary"></i> <span>Manajemen Matkul</span>
+            </a>
+            <a href="input-nilai.html" class="flex items-center space-x-3 bg-white/10 text-white px-4 py-3 rounded-xl font-bold border-l-4 border-secondary">
+                <i class="fas fa-file-invoice w-5"></i> <span>Kelola Nilai</span>
+            </a>
+            <a href="freeMaterials.html" class="flex items-center space-x-3 hover:bg-white/10 px-4 py-3 rounded-xl transition">
+                <i class="fas fa-book-open w-5 text-secondary"></i> <span>Free Materials</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        
+        <div class="bg-gradient-itu p-10 text-white flex justify-between items-center shadow-lg shrink-0">
+            <div class="flex items-center space-x-6">
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight">Dosen Informatika</h1>
+                    <p class="text-sm opacity-80">Indonesia Tech University, Jakarta</p>
+                </div>
+            </div>
+            <div class="flex space-x-12">
+                <div class="text-center">
+                    <p class="text-2xl font-bold">150</p>
+                    <p class="text-[10px] uppercase tracking-widest opacity-70">Students</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold">05</p>
+                    <p class="text-[10px] uppercase tracking-widest opacity-70">Subjects</p>
+                </div>
+                <div class="text-center border-l border-white/20 pl-12">
+                    <p class="text-2xl font-bold">84</p>
+                    <p class="text-[10px] uppercase tracking-widest opacity-70">Evaluations</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-10 -mt-8">
+            <div class="bg-white p-6 rounded-3xl shadow-xl border border-slate-100 flex flex-wrap lg:flex-nowrap items-end gap-4">
+                <div class="flex-1 min-w-[150px]">
+                    <label class="text-[10px] font-bold text-muted uppercase mb-2 block">Student's Name</label>
+                    <input type="text" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-secondary outline-none" placeholder="Enter name...">
+                </div>
+                <div class="flex-1 min-w-[150px]">
+                    <label class="text-[10px] font-bold text-muted uppercase mb-2 block">Subject</label>
+                    <select class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-secondary outline-none">
+                        <option>Select from list</option>
+                        <option>Algoritma & Struktur Data</option>
+                    </select>
+                </div>
+                <div class="w-32">
+                    <label class="text-[10px] font-bold text-muted uppercase mb-2 block">Marks Scored</label>
+                    <input type="text" class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-center focus:ring-2 focus:ring-secondary outline-none" placeholder="00 / 00">
+                </div>
+                <div class="flex-1 min-w-[150px]">
+                    <label class="text-[10px] font-bold text-muted uppercase mb-2 block">Type of Exam</label>
+                    <select class="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-secondary outline-none">
+                        <option>Select from list</option>
+                        <option>UAS</option>
+                        <option>UTS</option>
+                    </select>
+                </div>
+                <button class="bg-secondary text-white px-10 py-3 rounded-2xl font-bold hover:shadow-lg hover:bg-blue-600 transition shadow-blue-200">
+                    ADD NOW
+                </button>
+            </div>
+        </div>
+
+        <div class="p-10">
+            <div class="flex space-x-8 mb-8 border-b border-slate-200 pb-2">
+                <button class="text-secondary font-bold text-sm border-b-2 border-secondary pb-2">All</button>
+                <button class="text-muted font-medium text-sm hover:text-secondary transition">Class Exam</button>
+                <button class="text-muted font-medium text-sm hover:text-secondary transition">Online Exam</button>
+                <button class="text-muted font-medium text-sm hover:text-secondary transition">Missed Exam</button>
+                <div class="ml-auto relative w-64">
+                    <i class="fas fa-search absolute left-3 top-2 text-muted text-xs"></i>
+                    <input type="text" class="w-full bg-white border border-slate-200 rounded-full py-1.5 pl-9 pr-4 text-xs outline-none" placeholder="Search students...">
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="grid grid-cols-5 px-6 text-[10px] font-bold text-muted uppercase tracking-widest">
+                    <span>Name</span>
+                    <span>Subject</span>
+                    <span class="text-center">Marks Scored</span>
+                    <span class="text-center">Type of Exam</span>
+                    <span class="text-right pr-4">Action</span>
+                </div>
+
+                  <div id="row-1" class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition group">
+          <div class="w-1/5">
+            <p class="text-sm font-bold text-primary group-hover:text-secondary transition name-field">Dianne Ramadhani</p>
+            <p class="text-[10px] text-muted">Semester 5</p>
+          </div>
+          <div class="w-1/5 text-sm text-muted subject-field">Science</div>
+          <div class="w-1/5 text-center text-sm font-bold text-primary marks-field">85 / 100</div>
+          <div class="w-1/5 text-center text-sm text-muted exam-field">Online Exam</div>
+          <div class="w-1/5 text-right pr-4">
+            <button data-row="row-1" class="edit-btn text-secondary font-bold text-xs hover:underline">Edit</button>
+          </div>
+        </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition group">
+                    <div class="w-1/5">
+                        <p class="text-sm font-bold text-primary group-hover:text-secondary transition">Diza Agrafina</p>
+                        <p class="text-[10px] text-muted">Semester 5</p>
+                    </div>
+                    <div class="w-1/5 text-sm text-muted">Maths</div>
+                    <div class="w-1/5 text-center text-sm font-bold text-primary">63 / 100</div>
+                    <div class="w-1/5 text-center text-sm text-pink-500 font-medium">Missed Exam</div>
+                    <div class="w-1/5 text-right pr-4">
+                        <button class="text-secondary font-bold text-xs hover:underline">Edit</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition group">
+                    <div class="w-1/5">
+                        <p class="text-sm font-bold text-primary group-hover:text-secondary transition">Karina Aespa</p>
+                        <p class="text-[10px] text-muted">Semester 5</p>
+                    </div>
+                    <div class="w-1/5 text-sm text-muted">English Literature</div>
+                    <div class="w-1/5 text-center text-sm font-bold text-primary">56 / 100</div>
+                    <div class="w-1/5 text-center text-sm text-muted">Class Exam</div>
+                    <div class="w-1/5 text-right pr-4">
+                        <button class="text-secondary font-bold text-xs hover:underline">Edit</button>
+                    </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition group">
+                    <div class="w-1/5">
+                        <p class="text-sm font-bold text-primary group-hover:text-secondary transition">Leonardo Edwin Sijabat</p>
+                        <p class="text-[10px] text-muted">Semester 5</p>
+                    </div>
+                    <div class="w-1/5 text-sm text-muted">English Literature</div>
+                    <div class="w-1/5 text-center text-sm font-bold text-primary">56 / 100</div>
+                    <div class="w-1/5 text-center text-sm text-muted">Class Exam</div>
+                    <div class="w-1/5 text-right pr-4">
+                        <button class="text-secondary font-bold text-xs hover:underline">Edit</button>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition group">
+                    <div class="w-1/5">
+                        <p class="text-sm font-bold text-primary group-hover:text-secondary transition">Mohammad Arya Saloka</p>
+                        <p class="text-[10px] text-muted">Semester 5</p>
+                    </div>
+                    <div class="w-1/5 text-sm text-muted">English Literature</div>
+                    <div class="w-1/5 text-center text-sm font-bold text-primary">56 / 100</div>
+                    <div class="w-1/5 text-center text-sm text-muted">Class Exam</div>
+                    <div class="w-1/5 text-right pr-4">
+                        <button class="text-secondary font-bold text-xs hover:underline">Edit</button>
+                    </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition group">
+                    <div class="w-1/5">
+                        <p class="text-sm font-bold text-primary group-hover:text-secondary transition">Naufal Arraschya</p>
+                        <p class="text-[10px] text-muted">Semester 5</p>
+                    </div>
+                    <div class="w-1/5 text-sm text-muted">English Literature</div>
+                    <div class="w-1/5 text-center text-sm font-bold text-primary">56 / 100</div>
+                    <div class="w-1/5 text-center text-sm text-muted">Class Exam</div>
+                    <div class="w-1/5 text-right pr-4">
+                        <button class="text-secondary font-bold text-xs hover:underline">Edit</button>
+                    </div>
+                    </div>
+                    </div>
+    </div>
+
+    <a href="#" class="fixed bottom-8 right-8 bg-primary text-white px-6 py-3 rounded-full flex items-center space-x-3 shadow-2xl hover:scale-105 transition transform z-50">
+      <i class="fas fa-headset"></i>
+      <span class="font-medium">Support</span>
+    </a>
+  </main>
+            </div>
+        </div>
+
+        <a href="contacts.html" class="fixed bottom-8 right-8 bg-primary text-white px-6 py-3 rounded-full flex items-center space-x-3 shadow-2xl hover:scale-105 transition transform z-50">
+            <i class="fas fa-headset"></i>
+            <span class="font-medium">Support</span>
+        </a>
+    <!-- SINGLE MODAL (hapus modal duplikat, gunakan satu) -->
+  <div id="editModal" class="fixed inset-0 bg-black/50 hidden z-[60] flex items-center justify-center backdrop-blur-sm">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
+      <div class="bg-gradient-itu p-6 text-white">
+        <h3 class="text-xl font-bold">Edit Informasi Nilai</h3>
+        <p class="text-xs opacity-70" id="modalStudentName">Nama Mahasiswa</p>
+      </div>
+      <div class="p-8 space-y-4">
+        <div>
+          <label class="text-[10px] font-bold text-muted uppercase block mb-1">Subject</label>
+          <select id="editSubject" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-secondary outline-none">
+            <option>Science</option>
+            <option>Maths</option>
+            <option>English Literature</option>
+            <option>Algoritma & Struktur Data</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-muted uppercase block mb-1">Marks Scored</label>
+          <input type="text" id="editMarks" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-secondary outline-none" placeholder="00 / 100">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-muted uppercase block mb-1">Type of Exam</label>
+          <select id="editExamType" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-secondary outline-none">
+            <option>Online Exam</option>
+            <option>Class Exam</option>
+            <option>Missed Exam</option>
+          </select>
+        </div>
+        <div class="flex space-x-3 pt-4">
+          <button id="cancelModalBtn" class="flex-1 px-6 py-3 rounded-xl font-bold text-muted hover:bg-slate-100 transition">Batal</button>
+          <button id="saveModalBtn" class="flex-1 bg-secondary text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-600 shadow-lg shadow-blue-200 transition">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS: event delegation + modal logic + optional fetch API -->
+  <script>
+    let currentRowId = null;
+
+    // buka modal ketika tombol Edit diklik (event delegation)
+    document.addEventListener('click', function(e) {
+      if (e.target.matches('.edit-btn')) {
+        const rowId = e.target.dataset.row;
+        openModal(rowId);
+      }
+    });
+
+    function openModal(rowId) {
+      currentRowId = rowId;
+      const row = document.getElementById(rowId);
+      if (!row) return console.error('Row not found:', rowId);
+
+      // ambil data dari row (sesuai kelas yang kita tetapkan)
+      const name = row.querySelector('.name-field')?.innerText || '';
+      const subject = row.querySelector('.subject-field')?.innerText || '';
+      const marks = row.querySelector('.marks-field')?.innerText || '';
+      const examType = row.querySelector('.exam-field')?.innerText || '';
+
+      document.getElementById('modalStudentName').innerText = name;
+      document.getElementById('editSubject').value = subject;
+      document.getElementById('editMarks').value = marks;
+      document.getElementById('editExamType').value = examType;
+
+      document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').classList.add('hidden');
+      currentRowId = null;
+    }
+
+    document.getElementById('cancelModalBtn').addEventListener('click', closeModal);
+
+    document.getElementById('saveModalBtn').addEventListener('click', async function() {
+      if (!currentRowId) return;
+      const row = document.getElementById(currentRowId);
+      if (!row) return;
+
+      // ambil input dari modal
+      const newSubject = document.getElementById('editSubject').value;
+      const newMarks = document.getElementById('editMarks').value;
+      const newExamType = document.getElementById('editExamType').value;
+
+      // update DOM
+      row.querySelector('.subject-field').innerText = newSubject;
+      row.querySelector('.marks-field').innerText = newMarks;
+      const examField = row.querySelector('.exam-field');
+      examField.innerText = newExamType;
+
+      // tambahkan logic warna untuk Missed Exam
+      if (newExamType === 'Missed Exam') {
+        examField.className = 'w-1/5 text-center text-sm text-pink-500 font-medium exam-field';
+      } else {
+        examField.className = 'w-1/5 text-center text-sm text-muted exam-field';
+      }
+
+      closeModal();
+
+      // OPTIONAL: kirim update ke backend API (uncomment & sesuaikan URL)
+      /*
+      try {
+        const payload = {
+          subject: newSubject,
+          marks: newMarks,        // idealnya kirim parsed numeric, contoh: {marks_scored:85, total_marks:100}
+          type_of_exam: newExamType
+        };
+        const res = await fetch('/api/students/' + currentRowId, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+          // rollback jika perlu atau tampilkan error
+          console.error('Update failed', await res.text());
+          alert('Update ke server gagal');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Network error saat mengirim ke server');
+      }
+      */
+
+      alert('Data berhasil diperbarui!');
+    });
+  </script>
+</body>
+</html>

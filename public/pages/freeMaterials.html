@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Materials - ITU siCAD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#f8fafc] font-sans flex overflow-hidden">
+
+    <aside class="w-64 bg-[#1e293b] min-h-screen text-slate-300 flex flex-col shrink-0">
+        <div class="p-8 flex flex-col items-center border-b border-slate-700/50">
+            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-3 shadow-lg">
+                <span class="text-[#1e293b] font-black text-xl">ITU</span>
+            </div>
+            <h2 class="text-[10px] font-bold tracking-widest text-white uppercase text-center">Indonesia Tech University</h2>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2">
+<a href="dashboardDosen.html" class="flex items-center space-x-3 hover:bg-slate-800 px-4 py-3 rounded-lg transition">
+    <i class="fas fa-home w-5"></i> <span>Dashboard</span>
+</a>
+            <a href="#" class="flex items-center space-x-3 bg-blue-600 text-white px-4 py-3 rounded-lg font-medium shadow-lg shadow-blue-900/20">
+                <i class="fas fa-book-open w-5"></i> <span>Free Materials</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+        
+        <header class="bg-white h-20 border-b flex items-center justify-between px-10 shrink-0 sticky top-0 z-10">
+            <h1 class="text-xl font-bold text-slate-800">Kumpulan Materi Gratis</h1>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-slate-500">Halo, Dosen ITU</span>
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">D</div>
+            </div>
+        </header>
+
+        <div class="p-10">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-6">Pilih Jurusan / Prodi</h2>
+                <div class="flex justify-center gap-3">
+                    <button class="bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-semibold shadow-md">Semua</button>
+                    <button class="bg-white border text-slate-600 hover:bg-slate-50 px-6 py-2 rounded-full text-sm font-semibold transition">Informatika</button>
+                    <button class="bg-white border text-slate-600 hover:bg-slate-50 px-6 py-2 rounded-full text-sm font-semibold transition">Teknik Elektro</button>
+                    <button class="bg-white border text-slate-600 hover:bg-slate-50 px-6 py-2 rounded-full text-sm font-semibold transition">Sains Data</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition duration-300">
+                    <div class="h-32 bg-gradient-to-r from-blue-600 to-indigo-700 p-6 flex items-end">
+                        <i class="fas fa-code text-white/20 text-6xl absolute top-2 right-2"></i>
+                        <span class="bg-blue-400/30 text-white text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded">Modul PDF</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Algoritma & Struktur Data</h3>
+                        <p class="text-sm text-slate-500 mb-4 line-clamp-2">Pelajari konsep dasar linked list, tree, dan graph untuk pondasi pemrograman yang kuat.</p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-1 rounded border border-blue-100">Semester 1</span>
+                            <span class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2 py-1 rounded border border-indigo-100">Informatika</span>
+                            <span class="bg-slate-50 text-slate-600 text-[10px] font-bold px-2 py-1 rounded border border-slate-100">Teknologi</span>
+                        </div>
+
+                        <button class="w-full flex items-center justify-center space-x-2 bg-slate-900 text-white py-3 rounded-xl hover:bg-blue-600 transition font-semibold">
+                            <i class="fas fa-download text-sm"></i>
+                            <span>Download PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition duration-300">
+                    <div class="h-32 bg-gradient-to-r from-emerald-500 to-teal-600 p-6 flex items-end">
+                        <i class="fas fa-database text-white/20 text-6xl absolute top-2 right-2"></i>
+                        <span class="bg-emerald-400/30 text-white text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded">Materi Inti</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Statistika Komputasi</h3>
+                        <p class="text-sm text-slate-500 mb-4 line-clamp-2">Implementasi statistika menggunakan R dan Python untuk analisis data besar.</p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-1 rounded border border-emerald-100">Semester 3</span>
+                            <span class="bg-teal-50 text-teal-600 text-[10px] font-bold px-2 py-1 rounded border border-teal-100">Sains Data</span>
+                        </div>
+
+                        <button class="w-full flex items-center justify-center space-x-2 bg-slate-900 text-white py-3 rounded-xl hover:bg-emerald-600 transition font-semibold">
+                            <i class="fas fa-download text-sm"></i>
+                            <span>Download PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>

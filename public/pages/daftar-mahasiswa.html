@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Mahasiswa - ITU siCAD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Style untuk Modal agar berada di tengah */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 2rem; border-radius: 0.5rem; width: 100%; max-width: 400px;
+        }
+        input { border: 1px solid #cbd5e1; padding: 0.5rem; border-radius: 0.25rem; width: 100%; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="bg-slate-50 p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800">Manajemen Daftar Mahasiswa</h2>
+                <a href="dashboardDosen.html" class="text-blue-500 text-sm hover:underline">← Kembali ke Dashboard</a>
+            </div>
+            <button id="btnAdd" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <i class="fas fa-plus mr-2"></i>Tambah Mahasiswa
+            </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="p-4 border-b">
+                <input type="text" id="searchNIM" placeholder="Cari NIM atau Nama..." class="!mb-0 max-w-sm">
+            </div>
+
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-100 text-slate-600 uppercase text-xs font-semibold">
+                        <th class="p-4">NIM</th>
+                        <th class="p-4">Nama Lengkap</th>
+                        <th class="p-4 text-center">Semester</th>
+                        <th class="p-4 text-center">Kelas</th>
+                        <th class="p-4 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="studentTableBody" class="text-slate-700">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="modalMahasiswa" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3 id="modalTitle" class="text-xl font-bold mb-4">Tambah Mahasiswa</h3>
+            <form id="studentForm">
+                <label class="text-sm font-semibold">NIM</label>
+                <input type="text" id="nim" placeholder="Contoh: 20230001" required>
+                
+                <label class="text-sm font-semibold">Nama Lengkap</label>
+                <input type="text" id="nama" placeholder="Nama Lengkap" required>
+                
+                <label class="text-sm font-semibold">Email</label>
+                <input type="email" id="email" placeholder="email@student.itu.ac.id" required>
+                
+                <label class="text-sm font-semibold">Semester</label>
+                <input type="number" id="semester" placeholder="Semester" required>
+                
+                <label class="text-sm font-semibold">Kelas</label>
+                <input type="text" id="kelas" placeholder="Contoh: TI-A" required>
+                
+                <div class="flex space-x-3 mt-4">
+                    <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Simpan</button>
+                    <button type="button" id="btnCancel" class="flex-1 border border-slate-300 py-2 rounded hover:bg-slate-50">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Logika sederhana untuk buka/tutup modal langsung di sini agar responsif
+        const modal = document.getElementById('modalMahasiswa');
+        const btnAdd = document.getElementById('btnAdd');
+        const btnCancel = document.getElementById('btnCancel');
+
+        btnAdd.onclick = () => modal.style.display = 'flex';
+        btnCancel.onclick = () => modal.style.display = 'none';
+
+        // Menutup modal jika klik di luar area modal
+        window.onclick = (event) => {
+            if (event.target == modal) modal.style.display = 'none';
+        }
+    </script>
+    
+    <script src="../js/mahasiswa.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Landing — Pilih Login</title>
+  <style>
+    html,body{height:100%;margin:0;font-family:Inter, Arial, sans-serif;background:#f6f8fb}
+    .wrap{height:100%;display:flex;align-items:center;justify-content:center}
+    .card{background:#fff;padding:36px;border-radius:12px;box-shadow:0 6px 18px rgba(20,30,60,.08);width:420px;text-align:center}
+    h1{margin:0 0 18px;font-size:22px}
+    p{color:#546178;margin:0 0 24px}
+    .btn{display:block;padding:12px 18px;margin:8px 0;border-radius:8px;text-decoration:none;font-weight:600;cursor:pointer;transition: all 0.2s ease}
+    .btn-primary{background:#2b7cff;color:#fff;border:none}
+    .btn-primary:hover{background:#1a61d1}
+    .btn-outline{background:transparent;border:2px solid #2b7cff;color:#2b7cff}
+    .btn-outline:hover{background:#f0f5ff}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Masuk sebagai</h1>
+      <p>Pilih jenis akun untuk melanjutkan ke halaman yang sesuai.</p>
+
+      <!-- Sederhanakan: link langsung ke halaman login -->
+      <a href="login-dosen.html" class="btn btn-primary" id="dosenBtn">Login sebagai Dosen</a>
+      <a href="login-mahasiswa.html" class="btn btn-outline" id="mahasiswaBtn">Login sebagai Mahasiswa</a>
+    </div>
+  </div>
+
+  <!-- NOTE: tidak memuat js/auth.js di landing agar tidak terjadi redirect otomatis.
+       Semua logic autentikasi & penyimpanan session dilakukan di halaman login -->
+</body>
+</html>

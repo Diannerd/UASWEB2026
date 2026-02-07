@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard Mahasiswa — ITU</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Chart.js for simple GPA chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* Minor custom */
+    .card { border-radius: 14px; box-shadow: 0 8px 20px rgba(15,23,42,0.06); }
+    .avatar { width:72px; height:72px; border-radius:16px; background:linear-gradient(135deg,#6EE7B7,#3B82F6); display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px; }
+    .chip { font-size:12px;padding:6px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:600; }
+    .soft-hover:hover { transform: translateY(-6px); box-shadow: 0 14px 28px rgba(2,6,23,0.08); }
+    /* animated counter */
+    .count { transition: all .6s cubic-bezier(.2,.9,.3,1); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans antialiased">
+  <div class="min-h-screen flex">
+
+    <!-- SIDEBAR (simpel, tanpa Student's Life) -->
+    <aside class="w-72 bg-white border-r px-6 py-8">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="avatar">MR</div>
+        <div>
+          <div id="studentNameSide" class="font-semibold text-slate-900">Nama Mahasiswa</div>
+          <div id="studentNimSide" class="text-xs text-slate-500">NIM - 000000</div>
+        </div>
+      </div>
+
+      <nav class="space-y-1 text-sm">
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-100 text-slate-900 font-medium">
+          <i class="fas fa-house"></i> <span>Beranda</span>
+        </a>
+        <a href="#khs" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 transition">
+          <i class="fas fa-list-check"></i> <span>KHS & Transkrip</span>
+        </a>
+        <a href="#tugas" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 transition">
+          <i class="fas fa-folder-open"></i> <span>Tugas</span>
+        </a>
+        <a href="#jadwal" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 transition">
+          <i class="fas fa-calendar-alt"></i> <span>Jadwal & Kalender</span>
+        </a>
+        <a href="#portofolio" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 transition">
+          <i class="fas fa-briefcase"></i> <span>Portofolio</span>
+        </a>
+        <a href="#pengumuman" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 transition">
+          <i class="fas fa-bullhorn"></i> <span>Pengumuman</span>
+        </a>
+      </nav>
+
+      <div class="mt-8">
+        <button class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold" onclick="openProfileModal()">Edit Profil</button>
+      </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-8">
+      <!-- header -->
+      <header class="flex items-center justify-between mb-8">
+        <div>
+          <h2 id="greeting" class="text-2xl font-bold text-slate-800">Selamat datang, Mahasiswa</h2>
+          <div class="text-sm text-slate-500">Semoga hari ini produktif ✨</div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="text-right">
+            <div class="text-xs text-slate-500">IPK Saat Ini</div>
+            <div id="gpaText" class="text-xl font-semibold text-slate-800">3.50</div>
+          </div>
+          <div>
+            <button class="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition" onclick="downloadKHS('csv')">
+              <i class="fas fa-file-csv mr-2"></i>Export CSV
+            </button>
+            <button class="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition ml-2" onclick="downloadKHS('xls')">
+              <i class="fas fa-file-excel mr-2"></i>Export Excel
+            </button>
+            <button class="px-4 py-2 rounded-lg bg-red-500 text-white ml-4" onclick="logout()" title="Logout jika tersedia">Logout</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- TOP CARDS -->
+      <section class="grid grid-cols-12 gap-6 mb-6">
+        <div class="col-span-4 card p-5 bg-white soft-hover transition">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs text-slate-500">SKS Tercapai</div>
+              <div id="creditsText" class="text-2xl font-bold text-slate-800 count">72 / 144</div>
+            </div>
+            <div class="chip">+6 SKS</div>
+          </div>
+          <div class="mt-4">
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div id="creditsBar" class="h-3 bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full" style="width:50%"></div>
+            </div>
+            <div class="text-xs text-slate-400 mt-2">Progress penyelesaian S1</div>
+          </div>
+        </div>
+
+        <div class="col-span-4 card p-5 bg-white soft-hover transition">
+          <div class="text-xs text-slate-500">Indeks Prestasi Kumulatif</div>
+          <div class="flex items-center justify-between mt-2">
+            <div class="text-3xl font-extrabold text-slate-800" id="gpaBig">3.50</div>
+            <div class="text-xs text-slate-400">Dibanding semester lalu <span class="text-green-600 font-semibold">+0.12</span></div>
+          </div>
+          <div class="mt-4">
+            <canvas id="gpaChart" height="80"></canvas>
+          </div>
+        </div>
+
+        <div class="col-span-4 card p-5 bg-white soft-hover transition">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs text-slate-500">Kelas Aktif</div>
+              <div class="text-2xl font-bold text-slate-800" id="activeClassCount">5</div>
+            </div>
+            <div class="text-xs text-slate-400">Semester ini</div>
+          </div>
+
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-indigo-500 rounded-full"></div>
+              <div class="text-sm text-slate-700">Algoritma & Struktur Data</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-indigo-500 rounded-full"></div>
+              <div class="text-sm text-slate-700">Basis Data</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-indigo-500 rounded-full"></div>
+              <div class="text-sm text-slate-700">Interaksi Manusia-Komputer</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN GRID: KHS | Tugas | Jadwal | Portofolio -->
+      <section class="grid grid-cols-12 gap-6">
+        <!-- KHS & Transkrip (READ-ONLY)-->
+        <div id="khs" class="col-span-7 card p-6 bg-white">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <h3 class="text-lg font-bold text-slate-800">KHS & Transkrip</h3>
+              <div class="text-xs text-slate-500">Ringkasan nilai per mata kuliah</div>
+            </div>
+            <div class="text-xs text-indigo-600">Data resmi dari dosen. Hanya dapat diubah oleh dosen</div>
+          </div>
+
+          <div class="overflow-x-auto mt-3">
+            <table class="w-full text-sm">
+              <thead class="text-xs text-slate-500 text-left">
+                <tr>
+                  <th class="pb-3">Mata Kuliah</th>
+                  <th class="pb-3">SKS</th>
+                  <th class="pb-3 text-center">Nilai</th>
+                  <th class="pb-3 text-center">Huruf</th>
+                </tr>
+              </thead>
+              <tbody id="khsTableBody" class="text-sm text-slate-700">
+                <!-- rows dibangun oleh JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-4 flex items-center justify-between">
+            <div class="text-sm text-slate-500">Total SKS: <span id="totalSks">-</span></div>
+            <div class="flex items-center gap-2">
+              <button class="px-3 py-2 bg-slate-100 rounded-lg" onclick="downloadKHS('csv')">Export CSV</button>
+              <button class="px-3 py-2 bg-slate-100 rounded-lg" onclick="downloadKHS('xls')">Export Excel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tugas -->
+        <div id="tugas" class="col-span-5 card p-6 bg-white">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-slate-800">Tugas</h3>
+            <div class="text-sm text-slate-500">Submit & cek status</div>
+          </div>
+
+          <form id="submitTaskForm" class="space-y-3 mb-4">
+            <div>
+              <label class="text-xs text-slate-500">Pilih Mata Kuliah</label>
+              <select id="taskCourse" class="w-full border rounded-lg px-3 py-2 text-sm">
+              </select>
+            </div>
+            <div>
+              <label class="text-xs text-slate-500">Judul Tugas</label>
+              <input id="taskTitle" class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="Judul tugas..." required>
+            </div>
+            <div>
+              <label class="text-xs text-slate-500">Unggah File (pdf/doc)</label>
+              <input id="taskFile" type="file" accept=".pdf,.doc,.docx" class="w-full text-sm" />
+            </div>
+            <div class="flex gap-2">
+              <button type="submit" class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg">Kumpulkan tugas</button>
+              <button type="button" class="flex-1 bg-slate-100 px-4 py-2 rounded-lg" onclick="clearTaskForm()">Reset</button>
+            </div>
+          </form>
+
+          <div class="space-y-3">
+            <div id="tasksList">
+              <!-- tugas list -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Jadwal & Portofolio -->
+      <section class="grid grid-cols-12 gap-6 mt-6">
+        <!-- Jadwal -->
+        <div id="jadwal" class="col-span-6 card p-6 bg-white">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-slate-800">Jadwal & Kalender</h3>
+            <div class="text-sm text-slate-500">Lihat jadwal mingguan</div>
+          </div>
+
+          <div class="space-y-3">
+            <div id="calendarList" class="space-y-2">
+              <!-- events -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Portofolio -->
+        <div id="portofolio" class="col-span-6 card p-6 bg-white">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-slate-800">Portofolio</h3>
+            <div>
+              <button class="px-3 py-2 bg-indigo-600 text-white rounded-lg" onclick="openPortfolioModal()">Tambah Portofolio</button>
+            </div>
+          </div>
+
+          <div id="portfolioGrid" class="grid grid-cols-2 gap-4">
+            <!-- portfolio cards -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Pengumuman (sederhana) -->
+      <section id="pengumuman" class="mt-6 card p-6 bg-white">
+        <h3 class="text-lg font-bold text-slate-800 mb-3">Pengumuman</h3>
+        <ul id="announcements" class="space-y-3 text-slate-700">
+          <!-- dummy announcements -->
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL: Edit Profil (tetap ada) -->
+  <div id="profileModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+    <div class="bg-white w-full max-w-2xl rounded-2xl overflow-hidden card">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold">Edit Profil</h3>
+          <button onclick="closeProfileModal()" class="text-slate-500 hover:text-slate-700">&times;</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-slate-500">Nama</label>
+            <input id="profileName" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500">NIM / Email</label>
+            <input id="profileNim" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500">Semester</label>
+            <input id="profileSemester" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500">Kontak / Telepon</label>
+            <input id="profilePhone" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div class="col-span-2">
+            <label class="text-xs text-slate-500">Alamat</label>
+            <textarea id="profileAddress" class="w-full border rounded-lg px-3 py-2"></textarea>
+          </div>
+          <div>
+            <label class="text-xs text-slate-500">Foto Profil</label>
+            <input type="file" id="profilePhoto" accept="image/*" class="w-full" />
+          </div>
+        </div>
+
+        <div class="mt-4 flex justify-end gap-3">
+          <button class="px-4 py-2 rounded-lg bg-slate-100" onclick="closeProfileModal()">Batal</button>
+          <button class="px-4 py-2 rounded-lg bg-indigo-600 text-white" onclick="saveProfile()">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Tambah/Edit Portofolio (tetap ada) -->
+  <div id="portfolioModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+    <div class="bg-white w-full max-w-xl rounded-2xl overflow-hidden card p-6">
+      <div class="flex items-center justify-between mb-3">
+        <h3 id="portfolioModalTitle" class="text-lg font-bold">Tambah Portofolio</h3>
+        <button onclick="closePortfolioModal()" class="text-slate-500 hover:text-slate-700">&times;</button>
+      </div>
+
+      <div class="space-y-3">
+        <input id="portfolioTitle" placeholder="Judul proyek" class="w-full border rounded-lg px-3 py-2" />
+        <input id="portfolioLink" placeholder="Link (opsional)" class="w-full border rounded-lg px-3 py-2" />
+        <textarea id="portfolioDesc" placeholder="Deskripsi" class="w-full border rounded-lg px-3 py-2"></textarea>
+        <input type="file" id="portfolioImage" accept="image/*" class="w-full" />
+        <div class="flex justify-end gap-2">
+          <button class="px-4 py-2 bg-slate-100 rounded-lg" onclick="closePortfolioModal()">Batal</button>
+          <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg" onclick="savePortfolio()">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ============================
+   Data + Storage helpers
+   ============================ */
+const STORAGE_KEYS = {
+  profile: 'demo_student_profile_v1',
+  khs: 'demo_student_khs_v1',
+  tasks: 'demo_student_tasks_v1',
+  portfolio: 'demo_student_portfolio_v1',
+  calendar: 'demo_student_calendar_v1',
+  announcements: 'demo_student_ann_v1'
+};
+
+function saveToStorage(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+function loadFromStorage(key) {
+  const s = localStorage.getItem(key);
+  return s ? JSON.parse(s) : null;
+}
+
+/* ============================
+   Initial dummy data
+   ============================ */
+function ensureInitialData() {
+  if (!loadFromStorage(STORAGE_KEYS.profile)) {
+    saveToStorage(STORAGE_KEYS.profile, {
+      name: 'Dianne Ramadhani',
+      nim: '223PB007',
+      semester: '5',
+      phone: '+62 812-3456-7890',
+      address: 'Breezehome, Whiterun',
+      photoData: null
+    });
+  }
+  if (!loadFromStorage(STORAGE_KEYS.khs)) {
+    const khs = [
+      { id: 1, course: 'Algoritma & Struktur Data', sks: 3, score: '88 / 100', grade: 'A' },
+      { id: 2, course: 'Basis Data', sks: 3, score: '82 / 100', grade: 'A-' },
+      { id: 3, course: 'Interaksi Manusia-Komputer', sks: 2, score: '75 / 100', grade: 'B+' },
+      { id: 4, course: 'Jaringan Komputer', sks: 3, score: '80 / 100', grade: 'A-' }
+    ];
+    saveToStorage(STORAGE_KEYS.khs, khs);
+  }
+  if (!loadFromStorage(STORAGE_KEYS.tasks)) {
+    const tasks = [
+      { id: 't1', course: 'Algoritma & Struktur Data', title: 'Tugas Sorting', fileName: null, fileData: null, submittedAt: null, status: 'Belum dikumpulkan' }
+    ];
+    saveToStorage(STORAGE_KEYS.tasks, tasks);
+  }
+  if (!loadFromStorage(STORAGE_KEYS.portfolio)) {
+    saveToStorage(STORAGE_KEYS.portfolio, [
+      { id: 'p1', title: 'Proyek Mesin Tulis IoT', desc: 'Proyek pembuatan mesin tulis otomatis (campuran hardware & firmware)', link: '', imageData: null, createdAt: Date.now() }
+    ]);
+  }
+  if (!loadFromStorage(STORAGE_KEYS.calendar)) {
+    saveToStorage(STORAGE_KEYS.calendar, [
+      { id: 'e1', title: 'Ujian UTS - Algoritma', date: '2025-03-20 09:00' },
+      { id: 'e2', title: 'Pengumpulan Tugas - Basis Data', date: '2025-03-25 23:59' }
+    ]);
+  }
+  if (!loadFromStorage(STORAGE_KEYS.announcements)) {
+    saveToStorage(STORAGE_KEYS.announcements, [
+      { id: 'a1', text: 'Pemberitahuan: Perpanjangan pengumpulan tugas Basis Data hingga 25 Maret.' },
+      { id: 'a2', text: 'Workshop: AI untuk developer — Jumat, 28 Maret 2025.' }
+    ]);
+  }
+}
+
+/* ============================
+   Render functions (READ-ONLY KHS)
+   ============================ */
+function renderProfile() {
+  const p = loadFromStorage(STORAGE_KEYS.profile);
+  if (!p) return;
+  document.getElementById('studentNameSide').innerText = p.name;
+  document.getElementById('studentNimSide').innerText = `${p.nim}`;
+  document.getElementById('greeting').innerText = `Selamat datang, ${p.name}`;
+  document.getElementById('gpaText').innerText = computeGPA().toFixed(2);
+  document.getElementById('gpaBig').innerText = computeGPA().toFixed(2);
+  // avatar initials
+  const avatarEl = document.querySelector('.avatar');
+  if (p.photoData) {
+    avatarEl.style.background = `url(${p.photoData}) center/cover`;
+    avatarEl.innerText = '';
+  } else {
+    const parts = p.name.split(' ');
+    const initials = parts.length >= 2 ? parts[0][0] + parts[1][0] : p.name.slice(0,2);
+    avatarEl.innerText = initials.toUpperCase();
+  }
+}
+
+function renderKHS() {
+  const khs = loadFromStorage(STORAGE_KEYS.khs) || [];
+  const tbody = document.getElementById('khsTableBody');
+  tbody.innerHTML = '';
+  let totalSks = 0;
+  khs.forEach(item => {
+    totalSks += Number(item.sks || 0);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="py-3">${item.course}</td>
+      <td class="py-3">${item.sks}</td>
+      <td class="py-3 text-center">${item.score}</td>
+      <td class="py-3 text-center">${item.grade}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('totalSks').innerText = totalSks;
+  // credits bar and counts
+  const creditsText = `${totalSks} / 144`;
+  document.getElementById('creditsText').innerText = creditsText;
+  const percent = Math.min(100, Math.round((totalSks/144)*100));
+  document.getElementById('creditsBar').style.width = percent + '%';
+}
+
+function renderTasks() {
+  const tasks = loadFromStorage(STORAGE_KEYS.tasks) || [];
+  const sel = document.getElementById('taskCourse');
+  sel.innerHTML = '';
+  const khs = loadFromStorage(STORAGE_KEYS.khs) || [];
+  khs.forEach(k => {
+    const opt = document.createElement('option');
+    opt.value = k.course;
+    opt.innerText = k.course;
+    sel.appendChild(opt);
+  });
+
+  const list = document.getElementById('tasksList');
+  list.innerHTML = '';
+  tasks.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'p-3 border rounded-lg bg-slate-50 flex items-center justify-between';
+    div.innerHTML = `
+      <div>
+        <div class="font-semibold text-slate-800">${t.title}</div>
+        <div class="text-xs text-slate-500">${t.course} • ${t.submittedAt ? new Date(t.submittedAt).toLocaleString() : 'Belum dikumpulkan'}</div>
+      </div>
+      <div class="text-right">
+        <div class="text-sm ${t.status === 'Dinilai' ? 'text-green-600' : 'text-indigo-600'} font-semibold">${t.status}</div>
+        <div class="mt-2">
+          ${t.fileName ? `<a href="${t.fileData}" download="${t.fileName}" class="text-xs text-slate-500 underline mr-2">Unduh</a>` : ''}
+          <button class="text-xs px-2 py-1 bg-indigo-600 text-white rounded-md" onclick="editTask('${t.id}')">Edit</button>
+          <button class="text-xs px-2 py-1 bg-red-600 text-white rounded-md ml-2" onclick="deleteTask('${t.id}')">Hapus</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function renderPortfolio() {
+  const arr = loadFromStorage(STORAGE_KEYS.portfolio) || [];
+  const grid = document.getElementById('portfolioGrid');
+  grid.innerHTML = '';
+  arr.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'p-3 border rounded-lg bg-slate-50';
+    div.innerHTML = `
+      <div class="h-36 bg-white rounded-lg overflow-hidden mb-3 flex items-center justify-center">
+        ${p.imageData ? `<img src="${p.imageData}" alt="${p.title}" class="object-cover w-full h-full">` : `<div class="text-xs text-slate-400">No image</div>`}
+      </div>
+      <div class="font-semibold">${p.title}</div>
+      <div class="text-xs text-slate-500 mb-3">${p.desc}</div>
+      <div class="flex justify-between items-center">
+        <a href="${p.link || '#'}" target="_blank" class="text-xs text-indigo-600">${p.link ? 'Lihat link' : ''}</a>
+        <div>
+          <button class="text-xs px-2 py-1 bg-indigo-600 text-white rounded-md" onclick="openPortfolioModal('${p.id}')">Edit</button>
+          <button class="text-xs px-2 py-1 bg-red-600 text-white rounded-md ml-2" onclick="deletePortfolio('${p.id}')">Hapus</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderCalendar() {
+  const events = loadFromStorage(STORAGE_KEYS.calendar) || [];
+  const list = document.getElementById('calendarList');
+  list.innerHTML = '';
+  events.forEach(e => {
+    const d = document.createElement('div');
+    d.className = 'p-3 border rounded-lg bg-slate-50 flex items-center justify-between';
+    d.innerHTML = `<div><div class="font-semibold">${e.title}</div><div class="text-xs text-slate-500">${e.date}</div></div><div class="text-xs text-indigo-600">Detail</div>`;
+    list.appendChild(d);
+  });
+}
+
+function renderAnnouncements() {
+  const arr = loadFromStorage(STORAGE_KEYS.announcements) || [];
+  const list = document.getElementById('announcements');
+  list.innerHTML = '';
+  arr.forEach(a => {
+    const li = document.createElement('li');
+    li.className = 'p-3 border rounded-lg bg-slate-50';
+    li.innerText = a.text;
+    list.appendChild(li);
+  });
+}
+
+/* ============================
+   CRUD: Profile
+   ============================ */
+function openProfileModal() {
+  const p = loadFromStorage(STORAGE_KEYS.profile) || {};
+  document.getElementById('profileName').value = p.name || '';
+  document.getElementById('profileNim').value = p.nim || '';
+  document.getElementById('profileSemester').value = p.semester || '';
+  document.getElementById('profilePhone').value = p.phone || '';
+  document.getElementById('profileAddress').value = p.address || '';
+  document.getElementById('profileModal').classList.remove('hidden');
+}
+function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
+
+function saveProfile() {
+  const p = {
+    name: document.getElementById('profileName').value,
+    nim: document.getElementById('profileNim').value,
+    semester: document.getElementById('profileSemester').value,
+    phone: document.getElementById('profilePhone').value,
+    address: document.getElementById('profileAddress').value,
+    photoData: null
+  };
+  const f = document.getElementById('profilePhoto').files[0];
+  if (f) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      p.photoData = e.target.result;
+      saveToStorage(STORAGE_KEYS.profile, p);
+      closeProfileModal();
+      renderAll();
+    };
+    reader.readAsDataURL(f);
+  } else {
+    const existing = loadFromStorage(STORAGE_KEYS.profile) || {};
+    p.photoData = existing.photoData || null;
+    saveToStorage(STORAGE_KEYS.profile, p);
+    closeProfileModal();
+    renderAll();
+  }
+}
+
+/* ============================
+   CRUD: Tasks (Tugas)
+   ============================ */
+function clearTaskForm() {
+  document.getElementById('taskTitle').value = '';
+  document.getElementById('taskFile').value = '';
+}
+document.getElementById('submitTaskForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const course = document.getElementById('taskCourse').value;
+  const title = document.getElementById('taskTitle').value.trim();
+  if (!title) return alert('Masukkan judul tugas');
+  const file = document.getElementById('taskFile').files[0];
+  const tasks = loadFromStorage(STORAGE_KEYS.tasks) || [];
+  const id = 't' + Date.now();
+  let fileName = null, fileData = null;
+  if (file) {
+    fileName = file.name;
+    fileData = await readFileAsDataURL(file);
+  }
+  tasks.push({ id, course, title, fileName, fileData, submittedAt: Date.now(), status: 'Terkirim' });
+  saveToStorage(STORAGE_KEYS.tasks, tasks);
+  clearTaskForm();
+  renderAll();
+});
+
+function readFileAsDataURL(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = e => res(e.target.result);
+    r.onerror = e => rej(e);
+    r.readAsDataURL(file);
+  });
+}
+
+function editTask(id) {
+  const tasks = loadFromStorage(STORAGE_KEYS.tasks) || [];
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  const newTitle = prompt('Ubah judul tugas', t.title);
+  if (newTitle != null) {
+    t.title = newTitle;
+    saveToStorage(STORAGE_KEYS.tasks, tasks);
+    renderAll();
+  }
+}
+function deleteTask(id) {
+  if (!confirm('Hapus tugas?')) return;
+  let tasks = loadFromStorage(STORAGE_KEYS.tasks) || [];
+  tasks = tasks.filter(x => x.id !== id);
+  saveToStorage(STORAGE_KEYS.tasks, tasks);
+  renderAll();
+}
+
+/* ============================
+   CRUD: Portfolio
+   ============================ */
+let editingPortfolioId = null;
+function openPortfolioModal(id = null) {
+  editingPortfolioId = id || null;
+  if (id) {
+    const arr = loadFromStorage(STORAGE_KEYS.portfolio) || [];
+    const p = arr.find(x => x.id === id);
+    if (p) {
+      document.getElementById('portfolioTitle').value = p.title;
+      document.getElementById('portfolioDesc').value = p.desc;
+      document.getElementById('portfolioLink').value = p.link || '';
+    }
+    document.getElementById('portfolioModalTitle').innerText = 'Edit Portofolio';
+  } else {
+    document.getElementById('portfolioTitle').value = '';
+    document.getElementById('portfolioDesc').value = '';
+    document.getElementById('portfolioLink').value = '';
+    document.getElementById('portfolioModalTitle').innerText = 'Tambah Portofolio';
+  }
+  document.getElementById('portfolioModal').classList.remove('hidden');
+}
+function closePortfolioModal() { document.getElementById('portfolioModal').classList.add('hidden'); }
+
+async function savePortfolio() {
+  const title = document.getElementById('portfolioTitle').value.trim();
+  const desc = document.getElementById('portfolioDesc').value.trim();
+  const link = document.getElementById('portfolioLink').value.trim();
+  const imgFile = document.getElementById('portfolioImage').files[0];
+  if (!title) return alert('Masukkan judul proyek');
+
+  const arr = loadFromStorage(STORAGE_KEYS.portfolio) || [];
+  if (editingPortfolioId) {
+    const idx = arr.findIndex(x => x.id === editingPortfolioId);
+    if (idx >= 0) {
+      arr[idx].title = title; arr[idx].desc = desc; arr[idx].link = link;
+      if (imgFile) arr[idx].imageData = await readFileAsDataURL(imgFile);
+    }
+  } else {
+    const id = 'p' + Date.now();
+    const imageData = imgFile ? await readFileAsDataURL(imgFile) : null;
+    arr.push({ id, title, desc, link, imageData, createdAt: Date.now() });
+  }
+  saveToStorage(STORAGE_KEYS.portfolio, arr);
+  closePortfolioModal();
+  renderAll();
+}
+function deletePortfolio(id) {
+  if (!confirm('Hapus portofolio?')) return;
+  let arr = loadFromStorage(STORAGE_KEYS.portfolio) || [];
+  arr = arr.filter(x => x.id !== id);
+  saveToStorage(STORAGE_KEYS.portfolio, arr);
+  renderAll();
+}
+
+/* ============================
+   Export KHS CSV / Excel
+   ============================ */
+function downloadKHS(type = 'csv') {
+  const khs = loadFromStorage(STORAGE_KEYS.khs) || [];
+  if (type === 'csv') {
+    const header = ['Mata Kuliah','SKS','Nilai','Huruf'];
+    const rows = khs.map(k => [k.course,k.sks,k.score,k.grade]);
+    const csv = [header, ...rows].map(r => r.map(c => `"${(c+'').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'khs.csv'; a.click(); URL.revokeObjectURL(url);
+  } else {
+    // simple excel via HTML table (works in Excel)
+    let html = '<table><tr><th>Mata Kuliah</th><th>SKS</th><th>Nilai</th><th>Huruf</th></tr>';
+    khs.forEach(k => {
+      html += `<tr><td>${k.course}</td><td>${k.sks}</td><td>${k.score}</td><td>${k.grade}</td></tr>`;
+    });
+    html += '</table>';
+    const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'khs.xls'; a.click(); URL.revokeObjectURL(url);
+  }
+}
+
+/* ============================
+   Utility: compute GPA & chart
+   ============================ */
+function computeGPA() {
+  // Dummy: convert letter grades to points and average
+  const khs = loadFromStorage(STORAGE_KEYS.khs) || [];
+  if (!khs.length) return 0;
+  const map = { 'A':4.0, 'A-':3.7, 'B+':3.3, 'B':3.0, 'C':2.0, 'D':1.0 };
+  let total = 0; let count = 0;
+  khs.forEach(k => {
+    const g = map[k.grade] || 0;
+    total += g; count++;
+  });
+  return count ? total / count : 0;
+}
+
+let gpaChartInstance = null;
+function renderGPAChart() {
+  const ctx = document.getElementById('gpaChart').getContext('2d');
+  const dataPoints = [2.1,2.4,2.2,2.9,3.1,computeGPA()];
+  if (gpaChartInstance) gpaChartInstance.destroy();
+  gpaChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Sem 1','Sem 2','Sem 3','Sem 4','Sem 5','Sekarang'],
+      datasets: [{
+        label: 'IPK',
+        data: dataPoints,
+        fill: true,
+        backgroundColor: 'rgba(99,102,241,0.12)',
+        borderColor: 'rgba(99,102,241,1)',
+        tension: 0.35,
+        pointRadius: 4
+      }]
+    },
+    options: { plugins: { legend:{ display:false } }, scales: { y: { min:1, max:4 } } }
+  });
+}
+
+/* ============================
+   Render All
+   ============================ */
+function renderAll() {
+  renderProfile();
+  renderKHS();
+  renderTasks();
+  renderPortfolio();
+  renderCalendar();
+  renderAnnouncements();
+  renderGPAChart();
+  // animated counters
+  document.querySelectorAll('.count').forEach(el => {
+    el.style.transform = 'translateY(-4px)';
+    setTimeout(()=> el.style.transform = 'translateY(0)', 350);
+  });
+}
+
+/* ============================
+   Init
+   ============================ */
+ensureInitialData();
+renderAll();
+
+/* ============================
+   Logout: clear session & try multiple index paths
+   ============================ */
+async function logout() {
+  if (!confirm('Anda yakin ingin logout?')) return;
+
+  // bersihkan session lokal
+  localStorage.removeItem('role');
+  localStorage.removeItem('user');
+
+  const origin = location.origin;
+  const candidates = [
+    origin + '/public/index.html',
+    origin + '/index.html',
+    origin + '/',
+    '../index.html',
+    '../../index.html'
+  ];
+
+  for (const url of candidates) {
+    try {
+      // HEAD untuk cek resource tanpa mengambil body
+      const res = await fetch(url, { method: 'HEAD' });
+      if (res && res.ok) {
+        window.location.href = url;
+        return;
+      }
+    } catch (e) {
+      // abaikan error dan coba kandidat berikutnya
+    }
+  }
+
+  // fallback terakhir
+  window.location.href = '/public/index.html';
+}
+
+// expose function seperti semula
+window.openProfileModal = openProfileModal;
+window.closeProfileModal = closeProfileModal;
+window.saveProfile = saveProfile;
+window.openPortfolioModal = openPortfolioModal;
+window.closePortfolioModal = closePortfolioModal;
+window.savePortfolio = savePortfolio;
+window.deletePortfolio = deletePortfolio;
+window.downloadKHS = downloadKHS;
+window.logout = logout;
+
+</script>
+</body>
+</html>

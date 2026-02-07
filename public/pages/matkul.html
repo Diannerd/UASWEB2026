@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Mata Kuliah - ITU siCAD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-primary { background-color: #152259; }
+        .text-primary { color: #152259; }
+        .bg-secondary { background-color: #509cdb; }
+        .text-secondary { color: #509cdb; }
+        .text-muted { color: #495580; }
+        .border-light { border-color: #e2e8f0; }
+
+        /* Simple modal style */
+        .modal-backdrop { background: rgba(2,6,23,0.6); }
+    </style>
+</head>
+<body class="bg-[#f3f4f9] font-sans flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-primary text-white flex flex-col shrink-0 shadow-2xl">
+        <div class="p-8 flex flex-col items-center border-b border-white/10">
+            <div class="w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-3 shadow-lg">
+                <span class="text-primary font-black text-2xl">ITU</span>
+            </div>
+            <h2 class="text-xs font-bold tracking-widest uppercase text-center opacity-80">Indonesia Tech University</h2>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-1">
+            <a href="dashboardDosen.html" class="flex items-center space-x-3 hover:bg-white/10 px-4 py-3 rounded-xl transition group">
+                <i class="fas fa-home w-5 text-secondary group-hover:text-white"></i> <span class="font-medium">Dashboard</span>
+            </a>
+            <a href="matkul.html" class="flex items-center space-x-3 bg-secondary text-white px-4 py-3 rounded-xl font-bold shadow-lg shadow-blue-900/20">
+                <i class="fas fa-chalkboard-teacher w-5"></i> <span>Manajemen Matkul</span>
+            </a>
+            <a href="input-nilai.html" class="flex items-center space-x-3 hover:bg-white/10 px-4 py-3 rounded-xl transition group">
+                <i class="fas fa-file-invoice w-5 text-secondary group-hover:text-white"></i> <span class="font-medium">Kelola Nilai</span>
+            </a>
+            <a href="freeMaterials.html" class="flex items-center space-x-3 hover:bg-white/10 px-4 py-3 rounded-xl transition group">
+                <i class="fas fa-book-open w-5 text-secondary group-hover:text-white"></i> <span class="font-medium">Free Materials</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-hidden">
+        
+        <header class="bg-white h-20 px-10 flex items-center justify-between border-b border-light shrink-0">
+            <div class="relative w-96">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-muted">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="block w-full pl-10 pr-3 py-2 border-none bg-slate-100 rounded-xl focus:ring-2 focus:ring-secondary outline-none text-sm" placeholder="Cari kode atau mata kuliah...">
+            </div>
+            <div class="flex items-center space-x-6">
+                <button class="text-muted hover:text-secondary relative">
+                    <i class="far fa-bell text-xl"></i>
+                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                </button>
+                <div class="flex items-center space-x-3 border-l pl-6">
+                    <div class="text-right">
+                        <p class="text-xs font-bold text-primary">Dosen Informatika</p>
+                        <p class="text-[10px] text-muted">Online</p>
+                    </div>
+                    <img src="https://ui-avatars.com/api/?name=Dosen+ITU&background=509cdb&color=fff" class="w-10 h-10 rounded-xl shadow-sm" alt="Profile">
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 p-8 overflow-y-auto">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-light flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-secondary">
+                        <i class="fas fa-book-reader text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-muted uppercase tracking-wider">Total Matkul</p>
+                        <!-- beri id supaya bisa diupdate -->
+                        <p id="totalMatkul" class="text-2xl font-black text-primary">08</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-light flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-500">
+                        <i class="fas fa-users text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-muted uppercase tracking-wider">Total Mahasiswa</p>
+                        <p class="text-2xl font-black text-primary">245</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-light flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-500">
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-muted uppercase tracking-wider">Kelas Aktif</p>
+                        <p class="text-2xl font-black text-primary">12</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white rounded-3xl shadow-sm border border-light overflow-hidden">
+                        <div class="p-6 border-b border-light flex justify-between items-center">
+                            <h3 class="font-bold text-primary">Daftar Mata Kuliah</h3>
+                            <!-- tambahkan id pada tombol supaya script bisa memilihnya -->
+                            <button id="btnTambahMatkul" class="bg-secondary text-white px-4 py-2 rounded-xl text-xs font-bold hover:shadow-lg transition flex items-center space-x-2">
+                                <i class="fas fa-plus"></i> <span>Tambah Matkul</span>
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="p-4 text-[10px] font-black text-muted uppercase tracking-widest">Mata Kuliah</th>
+                                        <th class="p-4 text-[10px] font-black text-muted uppercase tracking-widest text-center">SKS</th>
+                                        <th class="p-4 text-[10px] font-black text-muted uppercase tracking-widest text-center">Semester</th>
+                                        <th class="p-4 text-[10px] font-black text-muted uppercase tracking-widest text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matkulTbody" class="divide-y divide-light">
+                                    <!-- baris awal tetap ada, script akan membaca dan merender ulang -->
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-4">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-secondary font-bold text-xs italic">INF</div>
+                                                <div>
+                                                    <p class="text-sm font-bold text-primary">Algoritma & Struktur Data</p>
+                                                    <p class="text-[10px] text-muted">INF-201 • Kelas IF-A1</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-4 text-center text-sm font-medium text-muted">3 SKS</td>
+                                        <td class="p-4 text-center text-sm font-medium text-muted">Ganjil</td>
+                                        <td class="p-4">
+                                            <div class="flex items-center justify-center space-x-2">
+                                                <button title="Edit Bobot Nilai" class="w-8 h-8 rounded-lg bg-blue-50 text-secondary hover:bg-secondary hover:text-white transition">
+                                                    <i class="fas fa-percentage text-xs"></i>
+                                                </button>
+                                                <button title="Edit Matkul" class="w-8 h-8 rounded-lg bg-slate-100 text-primary hover:bg-primary hover:text-white transition">
+                                                    <i class="fas fa-pen text-xs"></i>
+                                                </button>
+                                                <button title="Hapus" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition">
+                                                    <i class="fas fa-trash text-xs"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-4">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-500 font-bold text-xs italic">DS</div>
+                                                <div>
+                                                    <p class="text-sm font-bold text-primary">Dasar Sains Data</p>
+                                                    <p class="text-[10px] text-muted">DSD-104 • Kelas DS-B2</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-4 text-center text-sm font-medium text-muted">4 SKS</td>
+                                        <td class="p-4 text-center text-sm font-medium text-muted">Genap</td>
+                                        <td class="p-4">
+                                            <div class="flex items-center justify-center space-x-2">
+                                                <button title="Edit Bobot Nilai" class="w-8 h-8 rounded-lg bg-blue-50 text-secondary hover:bg-secondary hover:text-white transition">
+                                                    <i class="fas fa-percentage text-xs"></i>
+                                                </button>
+                                                <button title="Edit Matkul" class="w-8 h-8 rounded-lg bg-slate-100 text-primary hover:bg-primary hover:text-white transition">
+                                                    <i class="fas fa-pen text-xs"></i>
+                                                </button>
+                                                <button title="Hapus" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition">
+                                                    <i class="fas fa-trash text-xs"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 bg-slate-50 text-center">
+                            <button class="text-xs font-bold text-secondary hover:underline">Lihat Semua Mata Kuliah</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="bg-white rounded-3xl shadow-sm border border-light p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-primary">Jadwal Akademik</h3>
+                            <div class="flex space-x-2">
+                                <button class="text-muted"><i class="fas fa-chevron-left text-xs"></i></button>
+                                <button class="text-muted"><i class="fas fa-chevron-right text-xs"></i></button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-7 gap-2 text-center mb-4">
+                            <span class="text-[10px] font-bold text-muted uppercase">Mo</span>
+                            <span class="text-[10px] font-bold text-muted uppercase">Tu</span>
+                            <span class="text-[10px] font-bold text-muted uppercase">We</span>
+                            <span class="text-[10px] font-bold text-muted uppercase">Th</span>
+                            <span class="text-[10px] font-bold text-muted uppercase">Fr</span>
+                            <span class="text-[10px] font-bold text-muted uppercase text-secondary">Sa</span>
+                            <span class="text-[10px] font-bold text-muted uppercase text-secondary">Su</span>
+                        </div>
+                        <div class="grid grid-cols-7 gap-2 text-center text-xs font-medium text-primary">
+                            <span class="p-2 opacity-20">29</span>
+                            <span class="p-2 opacity-20">30</span>
+                            <span class="p-2">1</span>
+                            <span class="p-2">2</span>
+                            <span class="p-2">3</span>
+                            <span class="p-2 bg-secondary/10 rounded-lg text-secondary">4</span>
+                            <span class="p-2">5</span>
+                            </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl shadow-sm border border-light p-6">
+                        <h3 class="font-bold text-primary mb-6">Batas Input Nilai</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4 p-3 rounded-2xl bg-red-50 border border-red-100">
+                                <div class="w-10 h-10 rounded-xl bg-red-500 text-white flex items-center justify-center font-bold text-xs uppercase">
+                                    22<br><span class="text-[8px]">Jan</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-primary">Algoritma (UAS)</p>
+                                    <p class="text-[10px] text-red-500 font-medium">Sisa 3 hari lagi</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4 p-3 rounded-2xl bg-blue-50 border border-blue-100">
+                                <div class="w-10 h-10 rounded-xl bg-secondary text-white flex items-center justify-center font-bold text-xs uppercase">
+                                    25<br><span class="text-[8px]">Jan</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-primary">Sains Data (Tugas)</p>
+                                    <p class="text-[10px] text-secondary font-medium">Sisa 6 hari lagi</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <a href="contacts.html" class="fixed bottom-8 right-8 bg-primary text-white px-6 py-3 rounded-full flex items-center space-x-3 shadow-2xl hover:scale-105 transition transform z-50">
+            <i class="fas fa-headset"></i>
+            <span class="font-medium">Support</span>
+        </a>
+
+    </main>
+
+    <!-- Modal: Tambah Matkul -->
+    <div id="modalAddMatkul" class="fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-backdrop absolute inset-0"></div>
+        <div class="bg-white rounded-2xl shadow-2xl p-6 z-10 w-[420px]">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="font-bold text-lg">Tambah Mata Kuliah</h4>
+                <button id="closeModal" class="text-muted hover:text-primary"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="formAddMatkul" class="space-y-3">
+                <div>
+                    <label class="text-xs font-bold text-muted">Nama Mata Kuliah</label>
+                    <input required name="nama" class="block w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Contoh: Pemrograman Web">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-muted">Kode & Kelas (opsional)</label>
+                    <input name="kodekelas" class="block w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Contoh: INF-301 • Kelas IF-A2">
+                </div>
+                <div class="flex gap-3">
+                    <div class="flex-1">
+                        <label class="text-xs font-bold text-muted">SKS</label>
+                        <input required name="sks" type="number" min="1" max="10" class="block w-full mt-1 p-2 border rounded-lg text-sm" placeholder="3">
+                    </div>
+                    <div class="flex-1">
+                        <label class="text-xs font-bold text-muted">Semester</label>
+                        <select name="semester" class="block w-full mt-1 p-2 border rounded-lg text-sm">
+                            <option>Ganjil</option>
+                            <option>Genap</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-2 mt-4">
+                    <button type="button" id="cancelAdd" class="px-4 py-2 rounded-lg border">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg bg-secondary text-white">Tambah</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        const STORAGE_KEY = 'matkulData_v1';
+        const tbody = document.getElementById('matkulTbody');
+        const totalEl = document.getElementById('totalMatkul');
+        const btnTambah = document.getElementById('btnTambahMatkul');
+        const modal = document.getElementById('modalAddMatkul');
+        const closeModalBtn = document.getElementById('closeModal');
+        const cancelAdd = document.getElementById('cancelAdd');
+        const form = document.getElementById('formAddMatkul');
+
+        // Ambil data awal dari tabel HTML (baris yang sudah ada), kalau localStorage ada, pakai storage
+        function loadFromInitialTable() {
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const data = rows.map(row => {
+                const tds = row.querySelectorAll('td');
+                const namaEl = tds[0];
+                const sksText = (tds[1] && tds[1].textContent.trim()) || '';
+                const semesterText = (tds[2] && tds[2].textContent.trim()) || '';
+                // ambil judul dan subtitle (kode • kelas)
+                const judul = namaEl.querySelector('p.text-sm') ? namaEl.querySelector('p.text-sm').textContent.trim() : '';
+                const subtitleEl = namaEl.querySelector('p.text-[10px]');
+                const kodekelas = subtitleEl ? subtitleEl.textContent.trim() : '';
+                const sks = sksText.replace('SKS','').trim();
+                return { nama: judul, kodekelas, sks: sks || '0', semester: semesterText || '-' };
+            });
+            return data;
+        }
+
+        function saveToStorage(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function loadFromStorage() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : null;
+        }
+
+        function renderTable(data) {
+            tbody.innerHTML = ''; // bersihkan
+            data.forEach((m, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition';
+                tr.innerHTML = `
+                    <td class="p-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-secondary font-bold text-xs italic">${getAbbr(m.nama)}</div>
+                            <div>
+                                <p class="text-sm font-bold text-primary">${escapeHtml(m.nama)}</p>
+                                <p class="text-[10px] text-muted">${escapeHtml(m.kodekelas)}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-4 text-center text-sm font-medium text-muted">${escapeHtml(m.sks)} SKS</td>
+                    <td class="p-4 text-center text-sm font-medium text-muted">${escapeHtml(m.semester)}</td>
+                    <td class="p-4">
+                        <div class="flex items-center justify-center space-x-2">
+                            <button title="Edit Bobot Nilai" class="w-8 h-8 rounded-lg bg-blue-50 text-secondary hover:bg-secondary hover:text-white transition">
+                                <i class="fas fa-percentage text-xs"></i>
+                            </button>
+                            <button title="Edit Matkul" class="w-8 h-8 rounded-lg bg-slate-100 text-primary hover:bg-primary hover:text-white transition">
+                                <i class="fas fa-pen text-xs"></i>
+                            </button>
+                            <button title="Hapus" class="w-8 h-8 btn-hapus rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition">
+                                <i class="fas fa-trash text-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                // tambahkan listener hapus
+                tr.querySelector('.btn-hapus').addEventListener('click', () => {
+                    if (!confirm('Hapus mata kuliah ini?')) return;
+                    data.splice(idx, 1);
+                    saveToStorage(data);
+                    renderTable(data);
+                    updateTotal(data.length);
+                });
+                tbody.appendChild(tr);
+            });
+            updateTotal(data.length);
+        }
+
+        function updateTotal(n) {
+            totalEl.textContent = String(n).padStart(2, '0'); // format 08, 02, dsb
+        }
+
+        function getAbbr(nama) {
+            if (!nama) return '';
+            const parts = nama.trim().split(' ');
+            if (parts.length === 1) return parts[0].slice(0,3).toUpperCase();
+            return (parts[0].slice(0,1) + parts[1].slice(0,1)).toUpperCase();
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+        }
+
+        // inisialisasi
+        document.addEventListener('DOMContentLoaded', () => {
+            let data = loadFromStorage();
+            if (!data) {
+                data = loadFromInitialTable();
+                saveToStorage(data);
+            }
+            renderTable(data);
+        });
+
+        // open modal
+        btnTambah.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // reset form
+            form.reset();
+        });
+        function closeModal() {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelAdd.addEventListener('click', closeModal);
+
+        // submit form tambah
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const nama = formData.get('nama').trim();
+            const kodekelas = formData.get('kodekelas').trim();
+            const sks = formData.get('sks').trim();
+            const semester = formData.get('semester').trim();
+
+            if (!nama) {
+                alert('Nama mata kuliah wajib diisi');
+                return;
+            }
+
+            let data = loadFromStorage() || [];
+            data.push({ nama, kodekelas, sks, semester });
+            saveToStorage(data);
+            renderTable(data);
+            closeModal();
+        });
+
+    })();
+    </script>
+
+</body>
+</html>

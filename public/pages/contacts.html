@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Support - ITU siCAD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#f8fafc] flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-[#1e293b] text-slate-300 flex flex-col shrink-0">
+        <div class="p-8 flex flex-col items-center border-b border-slate-700/50">
+            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-3">
+                <span class="text-[#1e293b] font-black text-xl">ITU</span>
+            </div>
+            <h2 class="text-[10px] font-bold text-white uppercase text-center">Indonesia Tech University</h2>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <a href="dashboardDosen.html" class="flex items-center space-x-3 hover:bg-slate-800 px-4 py-3 rounded-lg transition">
+                <i class="fas fa-home w-5"></i> <span>Dashboard</span>
+            </a>
+            <a href="freeMaterials.html" class="flex items-center space-x-3 hover:bg-slate-800 px-4 py-3 rounded-lg transition">
+                <i class="fas fa-book-open w-5"></i> <span>Free Materials</span>
+            </a>
+            <a href="contacts.html" class="flex items-center space-x-3 bg-blue-600 text-white px-4 py-3 rounded-lg font-medium shadow-lg">
+                <i class="fas fa-envelope w-5"></i> <span>Contacts</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto">
+        <header class="bg-white h-20 border-b flex items-center px-10 sticky top-0 z-10 space-x-4">
+    <a href="dashboardDosen.html" class="text-slate-400 hover:text-blue-600 transition">
+        <i class="fas fa-arrow-left text-lg"></i>
+    </a>
+    <h1 class="text-xl font-bold text-slate-800">Pusat Bantuan & Kontak</h1>
+</header>
+
+
+        <div class="p-10 max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="text-blue-600 mb-4"><i class="fas fa-headset text-3xl"></i></div>
+                        <h3 class="font-bold text-slate-800">IT Helpdesk</h3>
+                        <p class="text-sm text-slate-500 mb-2">Masalah teknis & Login</p>
+                        <p class="text-blue-600 font-medium text-sm">support@itu.ac.id</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="text-indigo-600 mb-4"><i class="fas fa-university text-3xl"></i></div>
+                        <h3 class="font-bold text-slate-800">BAAK ITU</h3>
+                        <p class="text-sm text-slate-500 mb-2">Administrasi Nilai & KHS</p>
+                        <p class="text-indigo-600 font-medium text-sm">akademik@itu.ac.id</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6">Kirim Pesan Cepat</h3>
+                    <form class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label>
+                                <input type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Nama Anda..">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">NIDN / NIM</label>
+                                <input type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Identitas..">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Subjek</label>
+                            <select class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option>Masalah Input Nilai</option>
+                                <option>Gagal Download PDF</option>
+                                <option>Perubahan Data Akun</option>
+                                <option>Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Pesan</label>
+                            <textarea rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Tuliskan kendala Anda..."></textarea>
+                        </div>
+                        <button type="button" class="w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:bg-blue-600 transition">
+                            Kirim Tiket Bantuan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
